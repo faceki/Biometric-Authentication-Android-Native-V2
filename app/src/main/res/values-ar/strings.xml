@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="client_id">af7d4790-04a9-11ec-aecf-1dca4d5eaaf0</string>
+    <string name="email">demo@faceki.com</string>
+
+    <string name="app_name">فيس كي</string>
+    <string name="take_a_selfie">التقط صورة</string>
+    <string name="fit_your_face_in_the_middle"> ضع وجهك في الوسط </string>
+    <string name="powered_by"> مشغل بواسطة </string>
+    <string name="error"> خطأ </string>
+    <string name="check_internet"> تحقق من وجود الانترنت </string>
+    <string name="sign_up">اشتراك</string>
+    <string name="first_name"> الاسم الاول *</string>
+    <string name="last_name"> الاسم الاخير *</string>
+    <string name="telephone_number"> رقم الهاتف *</string>
+    <string name="e_mail"> البريد الالكتروني *</string>
+    <string name="next"> التالي</string>
+    <string name="verify_your_identity"> تحقق من هويتك </string>
+    <string name="it_will_take_only_few_seconds"> لحظات سيستغرق الأمر بضع ثواني </string>
+    <string name="successful"> تم بنجاح </string>
+    <string name="please_enter_email_address">الرجاء ادخال بريدك الالكتروني</string>
+    <string name="please_enter_mobile_number">الرجاء ادخال رقم هاتفك</string>
+    <string name="please_enter_last_name">الرجاء كتابة الاسم الأخير</string>
+    <string name="please_enter_first_name">الرجاء كتابة الاسم الاول</string>
+    <string name="permission_not_granted_by_user"> لايوجد اذن من قبل المستخدم </string>
+    <string name="could_not_set_up_the_face_detector"> كاشف الوجة لايعمل</string>
+    <string name="no_face_found"> لم يتم العثور على الوجة</string>
+    <string name="wrong_url">رابط خطأ</string>
+
+    <string name="don_t_have_a_faceki_account">ليس لديك حساب فيسكي؟</string>
+    <string name="sign_up1">التسجيل لاستخدام خيار الدخول بالسلفي</string>
+    <string name="sign_in">تسجيل الدخول</string>
+    <string name="sign_in_with_a_selfie">الدخول للحساب باستخدام السلفي</string>
+    <string name="back_to_home">العودة إلى المنزل</string>
+    <string name="welcome">مرحبا</string>
+</resources>
