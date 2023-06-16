@@ -20,7 +20,8 @@ import java.util.*
 
 class Confirmation : AppCompatActivity(), View.OnClickListener, IApiCallback {
     lateinit var binding: ActivityConfirmationBinding
-
+    var clientId = "5mt39sa7riglamm0agcmjs275d"
+    var clientSecret = "1d8trgarhpad3lhiq3gel5ip3v56kkoh45g1q1stth6htg8j9119"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Objects.requireNonNull(supportActionBar)!!.hide()
@@ -30,7 +31,8 @@ class Confirmation : AppCompatActivity(), View.OnClickListener, IApiCallback {
         )
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_confirmation)
-
+//        clientId = intent.getStringExtra("ClientId").toString()
+//        clientSecret = intent.getStringExtra("clientSecret").toString()
         setAppLanguage()
         apiCall()
     }
@@ -65,12 +67,8 @@ class Confirmation : AppCompatActivity(), View.OnClickListener, IApiCallback {
     }
 
     private fun apiCall() {
-        val hashMap = HashMap<String, String>()
-        hashMap["client_id"] = getString(R.string.client_id)
-        hashMap["email"] = getString(R.string.email)
-
         MyApplication.spinnerStart(this)
-        ApiCall.instance?.getToken(hashMap, this)
+        ApiCall.instance?.getToken(clientId, clientSecret, this)
     }
 
     override fun onSuccess(type: String, data: Any?) {
@@ -79,8 +77,7 @@ class Confirmation : AppCompatActivity(), View.OnClickListener, IApiCallback {
         if (responseGet.isSuccessful) {
             val objectType = object : TypeToken<GetTokenResponse>() {}.type
             val getTokenResponse: GetTokenResponse = Gson().fromJson(Gson().toJson(responseGet.body()), objectType)
-            MyApplication.setSharedPrefString("token", "Bearer " + getTokenResponse.token)
-
+            MyApplication.setSharedPrefString("token", "Bearer " + getTokenResponse.data?.access_token)
         } else
             MyApplication.showMassage(this, getString(R.string.error))
     }

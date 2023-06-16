@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="client_id">af7d4790-04a9-11ec-aecf-1dca4d5eaaf0</string>
-    <string name="email">demo@faceki.com</string>
-
     <string name="app_name">فيس كي</string>
     <string name="take_a_selfie">التقط صورة</string>
     <string name="fit_your_face_in_the_middle"> ضع وجهك في الوسط </string>
@@ -33,4 +30,7 @@
     <string name="sign_in_with_a_selfie">الدخول للحساب باستخدام السلفي</string>
     <string name="back_to_home">العودة إلى المنزل</string>
     <string name="welcome">مرحبا</string>
+    <string name="fail">Failed</string>
+    <string name="password">password*</string>
+    <string name="please_enter_password">Please enter password</string>
 </resources>

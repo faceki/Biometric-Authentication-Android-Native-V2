@@ -31,9 +31,14 @@ import com.faceki.model.SuccessPageModel
 import com.faceki.network.ApiCall
 import com.faceki.network.IApiCallback
 import com.faceki.network.RetrofitUtils
+import com.faceki.response.GetTokenResponse
 import com.faceki.utils.MyApplication
+import com.faceki.utils.StatusCodes
+import com.faceki.utils.StatusCodes.Companion.getStatusCodeFromInt
 import com.google.android.gms.vision.Frame
 import com.google.android.gms.vision.face.FaceDetector
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import retrofit2.Response
 import java.io.*
 import java.text.SimpleDateFormat
@@ -268,7 +273,7 @@ class FaceDetection : AppCompatActivity(), IApiCallback {
                 ApiCall.instance?.login(
                     MyApplication.getSharedPrefString("token"),
                     RetrofitUtils.createFilePart(
-                        "image",
+                        "selfie_image",
                         path,
                         RetrofitUtils.MEDIA_TYPE_IMAGE_ALL
                     ),
@@ -276,15 +281,17 @@ class FaceDetection : AppCompatActivity(), IApiCallback {
                 )
             else if (type == "signup") {
                 val hashMap = HashMap<String, Any>()
-                hashMap["client_id"] = getString(R.string.client_id)
-                hashMap["name"] = signUpDetailModel?.name!!
-                hashMap["mobile_number"] = signUpDetailModel?.number!!
-                hashMap["email"] = signUpDetailModel?.email!!
+                //hashMap["client_id"] = getString(R.string.client_id)
+                hashMap["firstName"] = signUpDetailModel?.firstName?:""
+                hashMap["lastName"] = signUpDetailModel?.lastName?:""
+                hashMap["phoneNumber"] = signUpDetailModel?.number?:""
+                hashMap["email"] = signUpDetailModel?.email?:""
+                hashMap["password"] = signUpDetailModel?.password!!
 
                 ApiCall.instance?.signup(
                     MyApplication.getSharedPrefString("token"),
                     RetrofitUtils.createFilePart(
-                        "image",
+                        "selfie_image",
                         path,
                         RetrofitUtils.MEDIA_TYPE_IMAGE_ALL
                     ),
@@ -328,12 +335,18 @@ class FaceDetection : AppCompatActivity(), IApiCallback {
     override fun onSuccess(type: String, data: Any?) {
         MyApplication.spinnerStop()
         val responseGet: Response<Any> = data as Response<Any>
+        val objectType = object : TypeToken<SuccessPageModel>() {}.type
+        val validateResponse: SuccessPageModel = Gson().fromJson(Gson().toJson(responseGet.body()), objectType)
         if (responseGet.isSuccessful) {
-            val successPageModel = SuccessPageModel()
-            successPageModel.image = R.drawable.success_gif
-            successPageModel.title = getString(R.string.successful)
-            successPageModel.name = getName(responseGet.body().toString())
-
+            val successPageModel = SuccessPageModel(
+                responseCode = validateResponse.responseCode,
+                data = SuccessPageModel.Data(
+                    logedIn = validateResponse.data?.logedIn,
+                    message = validateResponse.data?.message,
+                    user = validateResponse.data?.user
+                ),
+                type = type
+            )
             startActivity(
                 Intent(this, Successful::class.java)
                     .putExtra("SuccessPageModel", successPageModel)
@@ -341,12 +354,7 @@ class FaceDetection : AppCompatActivity(), IApiCallback {
             finishAffinity()
         } else {
             showCaptureImage("", false)
-            MyApplication.showMassage(this, getString(R.string.error))
-            /*startActivity(
-                Intent(this, SignUp::class.java)
-                    .putExtra("imagePath", path)
-            )
-            finish()*/
+            MyApplication.showMassage(this, "${getStatusCodeFromInt(validateResponse.responseCode?:-1).name}")
         }
     }
 

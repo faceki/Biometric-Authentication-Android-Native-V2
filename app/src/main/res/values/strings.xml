@@ -1,6 +1,6 @@
 <resources>
-    <string name="client_id">af7d4790-04a9-11ec-aecf-1dca4d5eaaf0</string>
-    <string name="email">demo@faceki.com</string>
+    <string name="client_id" translatable="false">5mt39sa7riglamm0agcmjs275d</string>
+    <string name="clientSecret" translatable="false">1d8trgarhpad3lhiq3gel5ip3v56kkoh45g1q1stth6htg8j9119</string>
 
     <string name="app_name">Faceki</string>
     <string name="take_a_selfie">Take a Selfie</string>
@@ -13,10 +13,13 @@
     <string name="last_name">Last Name*</string>
     <string name="telephone_number">Telephone Number*</string>
     <string name="e_mail">e-Mail*</string>
+    <string name="password">password*</string>
     <string name="next">Next</string>
     <string name="verify_your_identity">Verify Your Identity</string>
     <string name="it_will_take_only_few_seconds">It will take only few seconds</string>
     <string name="successful">Successful</string>
+    <string name="fail">Failed</string>
+    <string name="please_enter_password">Please enter password</string>
     <string name="please_enter_email_address">Please enter email address</string>
     <string name="please_enter_mobile_number">Please enter mobile number</string>
     <string name="please_enter_last_name">Please enter last name</string>

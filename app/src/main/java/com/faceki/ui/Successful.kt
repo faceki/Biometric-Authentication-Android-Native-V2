@@ -4,9 +4,11 @@ import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
+import android.opengl.Visibility
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -15,11 +17,12 @@ import androidx.databinding.DataBindingUtil
 import com.faceki.R
 import com.faceki.databinding.ActivitySuccessfulBinding
 import com.faceki.model.SuccessPageModel
+import com.faceki.utils.StatusCodes.Companion.getStatusCodeFromInt
 import java.util.*
 
 class Successful : AppCompatActivity() {
     lateinit var binding: ActivitySuccessfulBinding
-    private var successPageModel = SuccessPageModel()
+    lateinit var successPageModel: SuccessPageModel
     private var activityStatus = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,30 +36,52 @@ class Successful : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_successful)
 
         successPageModel = intent.getSerializableExtra("SuccessPageModel") as SuccessPageModel
+        if(successPageModel?.data?.logedIn==true){
+            Handler(Looper.getMainLooper()).postDelayed({
+                if (activityStatus)
+                    openLink()
+            }, 5000)
+        }
 
-        Handler(Looper.getMainLooper()).postDelayed({
-            if (activityStatus)
-                openLink()
-        }, 5000)
     }
 
     @SuppressLint("SetTextI18n")
     override fun onStart() {
         super.onStart()
+        var icon : Int = 0
+        var title = ""
+        if(successPageModel.type == "Login") {
+            if(successPageModel.data?.logedIn==true){
+                icon = R.drawable.success_gif
+                title = getString(R.string.successful)
+                binding.name.visibility = View.VISIBLE
+            } else{
+                icon = R.drawable.fail_gif
+                title = "${getString(R.string.fail)} - ${successPageModel.data?.message}"
+                binding.name.visibility = View.INVISIBLE
+            }
+        } else if(successPageModel.type == "SignUp"){
+            if(successPageModel.responseCode==0){
+                icon = R.drawable.success_gif
+                title = getString(R.string.successful)
+                binding.name.visibility = View.VISIBLE
+            } else{
+                icon = R.drawable.fail_gif
+                title = "${getString(R.string.fail)} - ${successPageModel.data?.message}"
+                binding.name.visibility = View.INVISIBLE
+            }
+        }
 
-        successPageModel.image?.let {
-            binding.image.setImageResource(it)
-        }
-        successPageModel.title.let {
-            binding.title.text = it ?: ""
-        }
-        successPageModel.name.let {
+
+        binding.image.setImageResource(icon)
+        binding.title.text = title
+        successPageModel.data?.user?.email?.let {
             if (it != "")
                 binding.name.text = getString(R.string.welcome) + "\n" + it
             else
                 binding.name.text = ""
         }
-        successPageModel.link.let {
+        successPageModel.data?.user?.selfieImage.let {
             binding.link.text = it ?: ""
         }
 
@@ -82,8 +107,8 @@ class Successful : AppCompatActivity() {
     }
 
     private fun openLink() {
-        var link = binding.link.text.toString().trim()
-        if (link.isNotEmpty()) {
+        var link = successPageModel.data?.user?.selfieImage
+        if (link?.isNotEmpty()==true) {
             if (!link.startsWith("https://"))
                 link = "https://$link"
             try {

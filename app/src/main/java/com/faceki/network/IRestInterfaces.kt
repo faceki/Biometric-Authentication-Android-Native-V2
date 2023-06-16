@@ -8,16 +8,15 @@ import java.util.*
 
 interface IRestInterfaces {
 
-    @FormUrlEncoded
-    @POST("getToken")
-    fun getToken(@FieldMap fields: HashMap<String, String>): Call<Any>
+    @GET("auth/api/access-token")
+    fun getToken(@Query("clientId") clientId: String, @Query("clientSecret") clientSecret: String): Call<Any>
 
     @Multipart
-    @POST("login")
+    @POST("facelink/api/login")
     fun login(@Header("Authorization") token: String, @Part image: MultipartBody.Part): Call<Any>
 
     @Multipart
-    @POST("signup")
+    @POST("facelink/api/signup")
     fun signup(
         @Header("Authorization") token: String,
         @Part image: MultipartBody.Part,

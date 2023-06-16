@@ -40,18 +40,21 @@ class SignUp : AppCompatActivity(){ //, IApiCallback {
         val lastName = binding.lastName.text.toString().trim()
         val number = binding.number.text.toString().trim()
         val email = binding.email.text.toString().trim()
+        val password = binding.password.text.toString().trim()
         val code: String = binding.ccp.selectedCountryCode
 //        val country: String = binding.ccp.selectedCountryEnglishName
 
         if (firstName.isNotEmpty())
             if (lastName.isNotEmpty())
                 if (number.isNotEmpty())
-                    if (email.isNotEmpty()) {
+                    if (email.isNotEmpty())
+                        if(password.isNotEmpty()) {
                         val signUpDetailModel = SignUpDetailModel()
-                        signUpDetailModel.name = "$firstName $lastName"
+                        signUpDetailModel.firstName = firstName
+                        signUpDetailModel.lastName = lastName
                         signUpDetailModel.number = code + number
                         signUpDetailModel.email = email
-
+                        signUpDetailModel.password = password
                         startActivity(
                             Intent(this, FaceDetection::class.java)
                                 .putExtra("type", "signup")
@@ -75,7 +78,8 @@ class SignUp : AppCompatActivity(){ //, IApiCallback {
                             RetrofitUtils.createMultipartRequest(hashMap),
                             this
                         )*/
-                    } else binding.email.error = getString(R.string.please_enter_email_address)
+                    }   else binding.password.error = getString(R.string.please_enter_password)
+                     else binding.email.error = getString(R.string.please_enter_email_address)
                 else binding.number.error = getString(R.string.please_enter_mobile_number)
             else binding.lastName.error = getString(R.string.please_enter_last_name)
         else binding.firstName.error = getString(R.string.please_enter_first_name)
